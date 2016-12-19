@@ -131,17 +131,77 @@ def preprocess_feature(fileds_dic, attac_dic, raw_feature_file, dest):
     fw.close()
 
 
+def preprocess_feature2(fileds_dic, attac_dic, raw_feature_file, dest):
+    add_attactype_dic = {"saint": 4, "mscan": 4, "apache2": 1, "mailbomb": 1, "udpstorm": 1,
+                         "processtable": 1, "httptunnel": 2,
+                         "ps": 2, "sqlttack": 2, "xterm": 2, "named": 3, "xsnoop": 3, "xlock": 3,
+                         "sendmail": 3, "worm": 3, "snmpgetattack": 3, "snmpguess": 3}
+    fr = open(raw_feature_file)
+    fw = open(dest, "w")
+    print "in preprocess_feature"
+    for line in fr:
+        print line
+        n_feature = 0
+        elms = line.split(",")
+        for i in range(len(elms)):
+            if i < 41:
+                if len(fileds_dic[i]) == 0:
+                    fw.write(elms[i] + "\t")
+                else:
+                    fw.write(str(fileds_dic[i].index(elms[i])) + "\t")
+                n_feature += 1
+            if i == 41:
+                attac = elms[i]
+                attac_codes = [18, 3, 2]
+                if attac_dic.has_key(attac):
+                    attac_codes = attac_dic[attac]
+                else:
+                    if add_attactype_dic.has_key(attac):
+                        attac_codes[1] = add_attactype_dic[attac]
+                for code in attac_codes:
+                    fw.write(str(code) + "\t")
+                fw.write("\n")
+            if i > 41:
+                break
+        print n_feature
+    print "end preprocess_feature"
+    fr.close()
+    fw.close()
+
+
 if __name__ == "__main__":
     print "hello"
     # gen_origin_fildes("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+.txt", \
     #                   "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/fileds.txt")
     # attac_code("/home/wyjn/下载/NSL_KDD-master/Attack Types.csv",
     #            "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/attack_types_code.txt")
-    # fileds_dic = read_fileds("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/fileds.txt")
-    # attac_dic = read_attacs("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/attack_types_code.txt")
+    fileds_dic = read_fileds("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/fileds.txt")
+    attac_dic = read_attacs("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/attack_types_code.txt")
+
+    # process1
+    # preprocess_feature(fileds_dic, attac_dic,
+    #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+.txt",
+    #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTrain+.txt")
     # preprocess_feature(fileds_dic, attac_dic,
     #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+_20Percent.txt",
     #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTrain+_20Percent.txt")
     # preprocess_feature(fileds_dic, attac_dic,
     #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest+.txt",
     #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTest+.txt")
+    # preprocess_feature(fileds_dic, attac_dic,
+    #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest-21.txt",
+    #                    "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTest-21.txt")
+
+    # precess 2
+    # preprocess_feature2(fileds_dic, attac_dic,
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+.txt",
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess2/KDDTrain+.txt")
+    # preprocess_feature2(fileds_dic, attac_dic,
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+_20Percent.txt",
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess2/KDDTrain+_20Percent.txt")
+    # preprocess_feature2(fileds_dic, attac_dic,
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest+.txt",
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess2/KDDTest+.txt")
+    # preprocess_feature2(fileds_dic, attac_dic,
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest-21.txt",
+    #                     "/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess2/KDDTest-21.txt")

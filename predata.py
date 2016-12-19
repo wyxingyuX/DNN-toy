@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 
 if __name__ == "__main__":
-    fr_train = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+_20Percent.txt")
-    fw_train = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/test_KDDTrain+_20Percent.txt", "w")
+    fr_train = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTrain+.txt")
+    fw_train = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTrain+.txt", "w")
     dic1 = {}
     dic2 = {}
     dic3 = {}
@@ -34,8 +34,8 @@ if __name__ == "__main__":
     fw_train.close()
 
     # test
-    fr_test = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest-21.txt")
-    fw_test = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/test_KDDTest-21.txt", "w")
+    fr_test = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/KDDTest+.txt")
+    fw_test = open("/home/wyjn/下载/NSL_KDD-master/Original NSL KDD Zip/preprocess/KDDTest+.txt", "w")
     for line in fr_test:
         elms = line.split(",")
         fw_test.write(elms[0] + '\t')
